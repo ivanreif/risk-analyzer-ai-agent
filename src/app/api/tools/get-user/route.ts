@@ -8,6 +8,5 @@ export async function GET() {
   const accountId = mbMetadata?.accountData?.accountId || 'near';
 
 
-
   return NextResponse.json({ accountId: accountId });
 }
