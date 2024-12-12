@@ -1,13 +1,5 @@
-import { NextResponse } from 'next/server';
-
-interface RedditPost {
-	title: string;
-	author: string;
-	subreddit: string;
-	score: number;
-	num_comments: number;
-	url: string;
-}
+import { RedditPost } from '@/types/tools';
+import { createToolResponse, createErrorResponse } from '@/utils/tools';
 
 interface RedditChild {
 	data: {
@@ -33,7 +25,7 @@ export async function GET() {
 			throw new Error('Failed to fetch Reddit frontpage');
 		}
 		const data: RedditResponse = await response.json();
-		
+
 		// Extract relevant information from the Reddit response
 		const posts: RedditPost[] = data.data.children.map((child: RedditChild) => ({
 			title: child.data.title,
@@ -44,9 +36,9 @@ export async function GET() {
 			url: `https://www.reddit.com${child.data.permalink}`,
 		}));
 
-		return NextResponse.json({ posts });
+		return createToolResponse<{ posts: RedditPost[] }>({ posts });
 	} catch (error) {
 		console.error('Error fetching Reddit frontpage:', error);
-		return NextResponse.json({ error: 'Failed to fetch Reddit frontpage' }, { status: 500 });
+		return createErrorResponse('Failed to fetch Reddit frontpage', 500);
 	}
 }

@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server';
+import { TransactionPayload } from '@/types/tools';
+import { createToolResponse, createErrorResponse } from '@/utils/tools';
 import { utils } from 'near-api-js';
 
 export async function GET(request: Request) {
@@ -8,17 +9,17 @@ export async function GET(request: Request) {
     const amount = searchParams.get('amount');
 
     if (!receiverId || !amount) {
-      return NextResponse.json({ error: 'receiverId and amount are required parameters' }, { status: 400 });
+      return createErrorResponse('receiverId and amount are required parameters', 400);
     }
 
     // Convert amount to yoctoNEAR (1 NEAR = 10^24 yoctoNEAR)
     const amountInYoctoNEAR = utils.format.parseNearAmount(amount);
 
     if (!amountInYoctoNEAR) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+      return createErrorResponse('Invalid amount', 400);
     }
 
-    const transactionPayload = {
+    const transactionPayload: TransactionPayload = {
       receiverId,
       actions: [
         {
@@ -30,9 +31,9 @@ export async function GET(request: Request) {
       ],
     };
 
-    return NextResponse.json({ transactionPayload });
+    return createToolResponse<{ transactionPayload: TransactionPayload }>({ transactionPayload });
   } catch (error) {
     console.error('Error generating NEAR transaction payload:', error);
-    return NextResponse.json({ error: 'Failed to generate NEAR transaction payload' }, { status: 500 });
+    return createErrorResponse('Failed to generate NEAR transaction payload', 500);
   }
 }
