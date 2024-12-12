@@ -52,7 +52,7 @@ export interface ToolSchema {
         'application/json': {
           schema: {
             type: string;
-            properties: Record<string, any>;
+            properties: Record<string, unknown>;
           };
         };
       };
