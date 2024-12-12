@@ -7,13 +7,13 @@ export async function GET() {
     let mbMetadata;
     try {
       mbMetadata = JSON.parse(headersList.get('mb-metadata') || '{}');
-    } catch (_parseError) {
+    } catch {
       return createErrorResponse('Invalid mb-metadata header format', 400);
     }
 
     const accountId = mbMetadata?.accountData?.accountId || 'near';
     return createToolResponse({ accountId });
-  } catch (_error) {
+  } catch {
     return createErrorResponse('Failed to retrieve user information', 500);
   }
 }
