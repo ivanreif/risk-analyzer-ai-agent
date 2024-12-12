@@ -1,4 +1,4 @@
-import { TwitterResponse } from '@/types/tools';
+import { TwitterResponse, TwitterPostParams } from '@/types/tools';
 import { createToolResponse, createErrorResponse } from '@/utils/tools';
 
 export async function GET(request: Request) {
@@ -33,3 +33,20 @@ export async function GET(request: Request) {
     return createErrorResponse('Failed to generate Twitter share intent', 500);
   }
 }
+
+export const POST = async (request: Request) => {
+  try {
+    const body: TwitterPostParams = await request.json();
+    const { query } = body;
+
+    if (!query) {
+      return createErrorResponse('query parameter is required', 400);
+    }
+
+    const twitterIntentUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(query)}`;
+    return createToolResponse<TwitterResponse>({ twitterIntentUrl });
+  } catch (error) {
+    console.error('Error generating Twitter share intent:', error);
+    return createErrorResponse('Failed to generate Twitter share intent', 500);
+  }
+};

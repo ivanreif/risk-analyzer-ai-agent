@@ -30,6 +30,22 @@ export interface CoinFlipResponse {
   result: 'heads' | 'tails';
 }
 
+// Tool request parameter types
+export interface TransactionPostParams {
+  blockchain: string;
+  amount: string;
+  recipient: string;
+}
+
+export interface RedditPostParams {
+  subreddit: string;
+  query: string;
+}
+
+export interface TwitterPostParams {
+  query: string;
+}
+
 // Tool configuration types
 export interface ToolParameter {
   name: string;
