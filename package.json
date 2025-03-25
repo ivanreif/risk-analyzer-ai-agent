@@ -11,24 +11,24 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@bitte-ai/agent-sdk": "0.1.9",
-    "near-api-js": "^5.1.0",
-    "near-safe": "0.9.11",
-    "next": "15.2.2",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "@bitte-ai/agent-sdk": "^0.1.9",
+    "near-api-js": "^5.1.1",
+    "near-safe": "^0.9.12",
+    "next": "^15.2.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "redoc": "^2.4.0",
-    "vercel-url": "0.2.6",
-    "viem": "2.23.11"
+    "vercel-url": "^0.2.6",
+    "viem": "^2.23.15"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.0",
-    "@types/node": "22.13.10",
-    "@types/react": "19.0.10",
-    "@types/react-dom": "19.0.4",
-    "concurrently": "9.1.2",
-    "eslint": "^9.22.0",
-    "eslint-config-next": "15.2.2",
+    "@eslint/eslintrc": "^3.3.1",
+    "@types/node": "^22.13.13",
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.23.0",
+    "eslint-config-next": "^15.2.4",
     "make-agent": "0.2.11",
     "typescript": "5.8.2"
   }
