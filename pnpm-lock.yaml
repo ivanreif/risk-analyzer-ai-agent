@@ -58,8 +58,8 @@ importers:
         specifier: ^15.2.4
         version: 15.2.4(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2)
       make-agent:
-        specifier: 0.2.11
-        version: 0.2.11(@types/node@22.13.13)(openapi-types@12.1.3)
+        specifier: 0.3.1
+        version: 0.3.1(@types/node@22.13.13)(openapi-types@12.1.3)
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -1851,8 +1851,8 @@ packages:
   lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
 
-  make-agent@0.2.11:
-    resolution: {integrity: sha512-GvO93OLHwYUrffe9XQcJMbhKjbLStxvlFBAq17JdlrfaESvrNz3/TgHLIiW46L2Ey2CJ8V4BWdM443VGvSw+yA==}
+  make-agent@0.3.1:
+    resolution: {integrity: sha512-14AGIytuA92JrQgEiQFsE1veZLjLkcXeKodiKHnY1YbLbGmVN4MjRJBbfDNjyA+JdQwULQ9Mct6ASZvt2HCt+g==}
     hasBin: true
 
   mark.js@8.11.1:
@@ -4495,7 +4495,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1)(eslint@9.23.0(jiti@2.4.2)):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0)(eslint@9.23.0(jiti@2.4.2)))(eslint@9.23.0(jiti@2.4.2)):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
@@ -4517,7 +4517,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 9.23.0(jiti@2.4.2)
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1)(eslint@9.23.0(jiti@2.4.2))
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.9.1(eslint-plugin-import@2.31.0)(eslint@9.23.0(jiti@2.4.2)))(eslint@9.23.0(jiti@2.4.2))
       hasown: 2.0.2
       is-core-module: 2.16.1
       is-glob: 4.0.3
@@ -5198,7 +5198,7 @@ snapshots:
 
   lunr@2.3.9: {}
 
-  make-agent@0.2.11(@types/node@22.13.13)(openapi-types@12.1.3):
+  make-agent@0.3.1(@types/node@22.13.13)(openapi-types@12.1.3):
     dependencies:
       '@apidevtools/swagger-parser': 10.1.1(openapi-types@12.1.3)
       ajv: 8.17.1
