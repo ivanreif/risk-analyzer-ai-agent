@@ -1,4 +1,4 @@
-# Bitte Oracle Agent
+# Bitte Risk Analyzer Agent
 
 A specialized AI agent for analyzing smart contract risks and security metrics.
 
