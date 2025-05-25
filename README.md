@@ -1,136 +1,153 @@
-# Bitte AI Agent NextJS Template
+# Bitte Oracle Agent
 
-This template provides a starting point for creating AI agents using the Bitte Protocol with Next.js. It includes pre-configured endpoints and tools that demonstrate common agent functionalities.
+A specialized AI agent for analyzing smart contract risks and security metrics.
 
 ## Features
 
-- 🤖 Pre-configured AI agent setup
-- 🛠️ Built-in tools and endpoints:
-  - Blockchain information retrieval
-  - NEAR transaction generation
-  - Reddit frontpage fetching
-  - Twitter share intent generation
-  - Coin flip functionality
-- ⚡ Next.js 14 with App Router
-- 🎨 Tailwind CSS for styling
-- 📝 TypeScript support
-- 🔄 Hot reload development environment
+### Risk Analyzer Tool
+The risk analyzer tool provides comprehensive analysis of Ethereum smart contracts, evaluating multiple risk factors:
 
-## Quick Start
+- **Contract Security**
+  - Code verification status
+  - Security vulnerabilities
+  - Code quality metrics
+  - Common vulnerability patterns
+  - Access control mechanisms
 
-1. Clone this repository
-2. Configure environment variables (create a `.env` or `.env.local` file)
+- **Liquidity Analysis**
+  - Total Value Locked (TVL)
+  - Liquidity depth
+  - Price impact
+  - Liquidity concentration
+  - DEX presence
 
-```bash
-# Get your API key from https://key.bitte.ai
-BITTE_API_KEY='your-api-key'
+- **Market Metrics**
+  - Price volatility
+  - Trading volume
+  - Market cap
+  - Price impact
+  - Historical data analysis
 
-ACCOUNT_ID='your-account.near'
+- **Governance Analysis**
+  - Proposal activity
+  - Voter participation
+  - Community engagement
+  - Active proposals
+  - Governance structure
+
+## API Endpoints
+
+### Risk Analyzer
+```http
+GET /api/tools/risk-analyzer?address={contractAddress}
 ```
 
-3. Install dependencies:
+Analyzes risk metrics for an Ethereum smart contract.
 
-```bash
-pnpm install
+**Parameters:**
+- `address` (required): Ethereum smart contract address to analyze
+
+**Response:**
+```json
+{
+    "contractRisk": number,
+    "liquidityRisk": number,
+    "volatilityRisk": number,
+    "securityRisk": number,
+    "marketRisk": number,
+    "governanceRisk": number,
+    "overallRisk": number,
+    "details": {
+        "contractVerified": boolean,
+        "tvl": number,
+        "volume24h": number,
+        "holderCount": number,
+        "securityIssues": string[],
+        "liquidityDepth": number,
+        "marketCap": number,
+        "governanceScore": number,
+        "codeQuality": number,
+        "auditStatus": string[],
+        "historicalIncidents": string[],
+        "priceImpact": number,
+        "concentrationRisk": number,
+        "protocolAge": number,
+        "socialMetrics": {
+            "socialLinks": {
+                "website": string,
+                "telegram": string,
+                "discord": string,
+                "github": string
+            },
+            "socialPresence": number
+        },
+        "codeAnalysis": {
+            "complexity": number,
+            "inheritanceDepth": number,
+            "functionCount": number,
+            "stateVariables": number,
+            "modifiers": number,
+            "events": number,
+            "hasFallback": boolean,
+            "hasReceive": boolean,
+            "hasSelfDestruct": boolean,
+            "hasDelegateCall": boolean,
+            "hasUncheckedMath": boolean,
+            "hasReentrancyRisk": boolean,
+            "hasAccessControl": boolean,
+            "hasPausable": boolean,
+            "hasUpgradeability": boolean
+        },
+        "isContract": boolean,
+        "isToken": boolean
+    }
+}
 ```
 
-4. Start the development server:
+**Error Responses:**
+- `400 Bad Request`: Invalid address or non-contract address
+- `500 Server Error`: Internal server error
 
-```bash
-pnpm run dev
+## Environment Variables
+
+Required environment variables:
+```env
+ETHEREUM_RPC_URL=your_ethereum_rpc_url
+ETHERSCAN_API_KEY=your_etherscan_api_key
 ```
 
-This will:
+## Installation
 
-- Start your Next.js application
-- Launch make-agent
-- Prompt you to sign a message in Bitte wallet to create an API key
-- Launch your agent in the Bitte playground
-- Allow you to freely edit and develop your code in the playground environment
-
-5. Build the project locally:
-
+1. Clone the repository:
 ```bash
-pnpm run build:dev
+git clone https://github.com/yourusername/bitte-oracle-agent.git
+cd bitte-oracle-agent
 ```
 
-This will build the project and not trigger `make-agent deploy`
-
-- using just `build` will trigger make-agent deploy and not work unless you provide your deployed plugin url using the `-u` flag.
-
-## Available Tools
-
-The template includes several pre-built tools:
-
-### 1. Blockchain Information
-
-- Endpoint: `/api/tools/get-blockchains`
-- Returns a randomized list of blockchain networks
-
-### 2. NEAR Transaction Generator
-
-- Endpoint: `/api/tools/create-near-transaction`
-- Creates NEAR transaction payloads for token transfers
-
-### 3. EVM Transaction Generator
-
-- Endpoint: `/api/tools/create-evm-transaction`
-- Creates EVM transaction payloads for native eth transfers
-
-### 4. Twitter Share
-
-- Endpoint: `/api/tools/twitter`
-- Generates Twitter share intent URLs
-
-### 5. Coin Flip
-
-- Endpoint: `/api/tools/coinflip`
-- Simple random coin flip generator
-
-### 6. Get User
-
-- Endpoint: `/api/tools/get-user`
-- Returns the user's account ID
-
-## AI Agent Configuration
-
-The template includes a pre-configured AI agent manifest at `/.well-known/ai-plugin.json`. You can customize the agent's behavior by modifying the configuration in `/api/ai-plugins/route.ts`. This route generates and returns the manifest object.
-
-## Deployment
-
-1. Push your code to GitHub
-2. Deploy to Vercel or your preferred hosting platform
-3. Add your `BITTE_API_KEY` to the environment variables
-4. The `make-agent deploy` command will automatically run during build
-
-## Making your own agent
-
-Whether you want to add a tool to this boilerplate or make your own standalone agent tool, here's you'll need:
-
-1. Make sure [`make-agent`](https://github.com/BitteProtocol/make-agent) is installed in your project:
-
+2. Install dependencies:
 ```bash
-pnpm install --D make-agent
+npm install
 ```
 
-2. Set up a manifest following the OpenAPI specification that describes your agent and its paths.
-3. Have an api endpoint with the path `GET /api/ai-plugin` that returns your manifest
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+# Edit .env.local with your API keys
+```
 
-## Setting up the manifest
+4. Run the development server:
+```bash
+npm run dev
+```
 
-Follow the [OpenAPI Specification](https://swagger.io/specification/#schema-1) to add the following fields in the manifest object:
+## API Integration
 
-- `openapi`: The OpenAPI specification version that your manifest is following. Usually this is the latest version.
-- `info`: Object containing information about the agent, namely its 'title', 'description' and 'version'.
-- `servers`: Array of objects containing the urls for the deployed instances of the agent.
-- `paths`: Object containing all your agent's paths and their operations.
-- `"x-mb"`: Our custom field, containing the account id of the owner and an 'assistant' object with the agent's metadata, namely the tools it uses, and additional instructions to guide it.
-
-## Learn More
-
-- [Bitte Protocol Documentation](https://docs.bitte.ai)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [OpenAPI Specification](https://swagger.io/specification/)
+The risk analyzer tool is designed to be integrated with AI agents and can be used to:
+- Evaluate smart contract security
+- Assess liquidity risks
+- Analyze market metrics
+- Review governance structure
+- Provide comprehensive risk scores
 
 ## Contributing
 
@@ -138,4 +155,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-MIT License
+This project is licensed under the MIT License - see the LICENSE file for details.
