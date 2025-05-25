@@ -17,240 +17,147 @@ export async function GET() {
         "x-mb": {
             "account-id": ACCOUNT_ID,
             assistant: {
-                name: "Your Assistant",
-                description: "An assistant that answers with blockchain information, tells the user's account id, interacts with twitter, creates transaction payloads for NEAR and EVM blockchains, and flips coins.",
-                instructions: "You create near and evm transactions, give blockchain information, tell the user's account id, interact with twitter and flip coins. For blockchain transactions, first generate a transaction payload using the appropriate endpoint (/api/tools/create-near-transaction or /api/tools/create-evm-transaction), then explicitly use the 'generate-transaction' tool for NEAR or 'generate-evm-tx' tool for EVM to actually send the transaction on the client side. For EVM transactions, make sure to provide the 'to' address (recipient) and 'amount' (in ETH) parameters when calling /api/tools/create-evm-transaction. Simply getting the payload from the endpoints is not enough - the corresponding tool must be used to execute the transaction.",
-                tools: [{ type: "generate-transaction" }, { type: "generate-evm-tx" }, { type: "sign-message" }]
+                name: "Risk Analysis Assistant",
+                description: "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
+                instructions: "You analyze and provide risk assessments for Ethereum smart contracts, liquidity pools, and DeFi protocols. For each analysis, you evaluate multiple risk factors including contract verification and age, liquidity depth and concentration, price volatility, security posture, market metrics, and governance structure. Use the risk-analyzer tool to get detailed risk metrics for any Ethereum address. Present the analysis in a clear, structured format highlighting key risk factors and their implications. For high-risk findings, provide specific recommendations for risk mitigation.",
+                tools: [{ type: "risk-analyzer" }]
             },
         },
         paths: {
-            "/api/tools/get-blockchains": {
+            "/api/tools/risk-analyzer": {
                 get: {
-                    summary: "get blockchain information",
-                    description: "Respond with a list of blockchains",
-                    operationId: "get-blockchains",
+                    summary: "Analyze risk metrics for a smart contract",
+                    description: "Performs comprehensive risk analysis on an Ethereum smart contract, evaluating contract security, liquidity, volatility, and market risks. This tool only works with smart contract addresses, not regular wallet addresses. The analysis includes contract verification status, code quality, security vulnerabilities, liquidity metrics, market data, and governance structure.",
+                    operationId: "analyzeRisk",
+                    parameters: [
+                        {
+                            name: "address",
+                            in: "query",
+                            required: true,
+                            schema: {
+                                type: "string"
+                            },
+                            description: "The Ethereum smart contract address to analyze. Must be a valid smart contract address, not a regular wallet address."
+                        }
+                    ],
                     responses: {
                         "200": {
-                            description: "Successful response",
+                            description: "Successful risk analysis",
                             content: {
                                 "application/json": {
                                     schema: {
                                         type: "object",
                                         properties: {
-                                            message: {
-                                                type: "string",
-                                                description: "The list of blockchains",
+                                            contractRisk: {
+                                                type: "number",
+                                                description: "Risk score for contract verification and age (0-1, higher is riskier)"
                                             },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-            "/api/tools/get-user": {
-                get: {
-                    summary: "get user information",
-                    description: "Returns user account ID and EVM address",
-                    operationId: "get-user",
-                    parameters: [
-                        {
-                            name: "accountId",
-                            in: "query",
-                            required: false,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The user's account ID"
-                        },
-                        {
-                            name: "evmAddress",
-                            in: "query",
-                            required: false,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The user's EVM address"
-                        }
-                    ],
-                    responses: {
-                        "200": {
-                            description: "Successful response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            accountId: {
-                                                type: "string",
-                                                description: "The user's account ID, if you dont have it, return an empty string"
+                                            liquidityRisk: {
+                                                type: "number",
+                                                description: "Risk score for liquidity depth and concentration (0-1, higher is riskier)"
                                             },
-                                            evmAddress: {
-                                                type: "string",
-                                                description: "The user's EVM address, if you dont have it, return an empty string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "/api/tools/twitter": {
-                get: {
-                    operationId: "getTwitterShareIntent",
-                    summary: "Generate a Twitter share intent URL",
-                    description: "Creates a Twitter share intent URL based on provided parameters",
-                    parameters: [
-                        {
-                            name: "text",
-                            in: "query",
-                            required: true,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The text content of the tweet"
-                        },
-                        {
-                            name: "url",
-                            in: "query",
-                            required: false,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The URL to be shared in the tweet"
-                        },
-                        {
-                            name: "hashtags",
-                            in: "query",
-                            required: false,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "Comma-separated hashtags for the tweet"
-                        },
-                        {
-                            name: "via",
-                            in: "query",
-                            required: false,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The Twitter username to attribute the tweet to"
-                        }
-                    ],
-                    responses: {
-                        "200": {
-                            description: "Successful response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            twitterIntentUrl: {
-                                                type: "string",
-                                                description: "The generated Twitter share intent URL"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "400": {
-                            description: "Bad request",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            error: {
-                                                type: "string",
-                                                description: "Error message"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "500": {
-                            description: "Error response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            error: {
-                                                type: "string",
-                                                description: "Error message"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "/api/tools/create-near-transaction": {
-                get: {
-                    operationId: "createNearTransaction",
-                    summary: "Create a NEAR transaction payload",
-                    description: "Generates a NEAR transaction payload for transferring tokens to be used directly in the generate-tx tool",
-                    parameters: [
-                        {
-                            name: "receiverId",
-                            in: "query",
-                            required: true,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The NEAR account ID of the receiver"
-                        },
-                        {
-                            name: "amount",
-                            in: "query",
-                            required: true,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The amount of NEAR tokens to transfer"
-                        }
-                    ],
-                    responses: {
-                        "200": {
-                            description: "Successful response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            transactionPayload: {
+                                            volatilityRisk: {
+                                                type: "number",
+                                                description: "Risk score for price and TVL volatility (0-1, higher is riskier)"
+                                            },
+                                            securityRisk: {
+                                                type: "number",
+                                                description: "Risk score for security issues and code quality (0-1, higher is riskier)"
+                                            },
+                                            marketRisk: {
+                                                type: "number",
+                                                description: "Risk score for market metrics and trading activity (0-1, higher is riskier)"
+                                            },
+                                            governanceRisk: {
+                                                type: "number",
+                                                description: "Risk score for governance structure and activity (0-1, higher is riskier)"
+                                            },
+                                            overallRisk: {
+                                                type: "number",
+                                                description: "Overall risk score combining all factors (0-1, higher is riskier)"
+                                            },
+                                            details: {
                                                 type: "object",
                                                 properties: {
-                                                    receiverId: {
-                                                        type: "string",
-                                                        description: "The receiver's NEAR account ID"
+                                                    contractVerified: {
+                                                        type: "boolean",
+                                                        description: "Whether the contract is verified on Etherscan"
                                                     },
-                                                    actions: {
+                                                    tvl: {
+                                                        type: "number",
+                                                        description: "Total Value Locked in USD"
+                                                    },
+                                                    volume24h: {
+                                                        type: "number",
+                                                        description: "24-hour trading volume in USD"
+                                                    },
+                                                    holderCount: {
+                                                        type: "number",
+                                                        description: "Number of token holders"
+                                                    },
+                                                    securityIssues: {
                                                         type: "array",
                                                         items: {
-                                                            type: "object",
-                                                            properties: {
-                                                                type: {
-                                                                    type: "string",
-                                                                    description: "The type of action (e.g., 'Transfer')"
-                                                                },
-                                                                params: {
-                                                                    type: "object",
-                                                                    properties: {
-                                                                        deposit: {
-                                                                            type: "string",
-                                                                            description: "The amount to transfer in yoctoNEAR"
-                                                                        }
-                                                                    }
-                                                                }
+                                                            type: "string"
+                                                        },
+                                                        description: "List of identified security issues"
+                                                    },
+                                                    liquidityDepth: {
+                                                        type: "number",
+                                                        description: "Ratio of volume to TVL"
+                                                    },
+                                                    marketCap: {
+                                                        type: "number",
+                                                        description: "Market capitalization in USD"
+                                                    },
+                                                    governanceScore: {
+                                                        type: "number",
+                                                        description: "Score for governance structure (0-1)"
+                                                    },
+                                                    codeQuality: {
+                                                        type: "number",
+                                                        description: "Score for code quality (0-1)"
+                                                    },
+                                                    auditStatus: {
+                                                        type: "array",
+                                                        items: {
+                                                            type: "string"
+                                                        },
+                                                        description: "List of audit statuses"
+                                                    },
+                                                    historicalIncidents: {
+                                                        type: "array",
+                                                        items: {
+                                                            type: "string"
+                                                        },
+                                                        description: "List of historical security incidents"
+                                                    },
+                                                    priceImpact: {
+                                                        type: "number",
+                                                        description: "Price impact of trades"
+                                                    },
+                                                    concentrationRisk: {
+                                                        type: "number",
+                                                        description: "Risk score for liquidity concentration (0-1)"
+                                                    },
+                                                    protocolAge: {
+                                                        type: "number",
+                                                        description: "Age of the protocol in years"
+                                                    },
+                                                    socialMetrics: {
+                                                        type: "object",
+                                                        properties: {
+                                                            twitterFollowers: {
+                                                                type: "number",
+                                                                description: "Number of Twitter followers"
+                                                            },
+                                                            telegramMembers: {
+                                                                type: "number",
+                                                                description: "Number of Telegram group members"
+                                                            },
+                                                            socialPresence: {
+                                                                type: "number",
+                                                                description: "Overall social presence score (0-1)"
                                                             }
                                                         }
                                                     }
@@ -270,102 +177,21 @@ export async function GET() {
                                         properties: {
                                             error: {
                                                 type: "string",
-                                                description: "Error message"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "500": {
-                            description: "Error response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            error: {
+                                                description: "Error message indicating the type of error"
+                                            },
+                                            message: {
                                                 type: "string",
-                                                description: "Error message"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "/api/tools/create-evm-transaction": {
-                get: {
-                    operationId: "createEvmTransaction",
-                    summary: "Create EVM transaction",
-                    description: "Generate an EVM transaction payload with specified recipient and amount to be used directly in the generate-evm-tx tool",
-                    parameters: [
-                        {
-                            name: "to",
-                            in: "query",
-                            required: true,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The EVM address of the recipient"
-                        },
-                        {
-                            name: "amount",
-                            in: "query",
-                            required: true,
-                            schema: {
-                                type: "string"
-                            },
-                            description: "The amount of ETH to transfer"
-                        }
-                    ],
-                    responses: {
-                        "200": {
-                            description: "Successful response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            evmSignRequest: {
-                                                type: "object",
-                                                properties: {
-                                                    to: {
-                                                        type: "string",
-                                                        description: "Receiver address"
-                                                    },
-                                                    value: {
-                                                        type: "string",
-                                                        description: "Transaction value"
-                                                    },
-                                                    data: {
-                                                        type: "string",
-                                                        description: "Transaction data"
-                                                    },
-                                                    from: {
-                                                        type: "string",
-                                                        description: "Sender address"
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "400": {
-                            description: "Bad request",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            error: {
+                                                description: "Detailed explanation of the error"
+                                            },
+                                            details: {
                                                 type: "string",
-                                                description: "Error message"
+                                                description: "Additional information about the error"
                                             }
+                                        },
+                                        example: {
+                                            error: "This tool only works with smart contracts",
+                                            message: "The provided address is not a smart contract. Please provide a valid smart contract address to analyze its risk metrics.",
+                                            details: "Smart contracts are programs that run on the Ethereum blockchain. Regular wallet addresses cannot be analyzed by this tool."
                                         }
                                     }
                                 }
@@ -373,48 +199,6 @@ export async function GET() {
                         },
                         "500": {
                             description: "Server error",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            error: {
-                                                type: "string",
-                                                description: "Error message"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "/api/tools/coinflip": {
-                get: {
-                    summary: "Coin flip",
-                    description: "Flip a coin and return the result (heads or tails)",
-                    operationId: "coinFlip",
-                    responses: {
-                        "200": {
-                            description: "Successful response",
-                            content: {
-                                "application/json": {
-                                    schema: {
-                                        type: "object",
-                                        properties: {
-                                            result: {
-                                                type: "string",
-                                                description: "The result of the coin flip (heads or tails)",
-                                                enum: ["heads", "tails"]
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        "500": {
-                            description: "Error response",
                             content: {
                                 "application/json": {
                                     schema: {
