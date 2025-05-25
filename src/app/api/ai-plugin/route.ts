@@ -53,6 +53,7 @@ export async function GET() {
                                 "application/json": {
                                     schema: {
                                         type: "object",
+                                        required: ["contractRisk", "liquidityRisk", "volatilityRisk", "securityRisk", "marketRisk", "governanceRisk", "overallRisk", "details"],
                                         properties: {
                                             contractRisk: {
                                                 type: "number",
@@ -180,6 +181,7 @@ export async function GET() {
                                 "application/json": {
                                     schema: {
                                         type: "object",
+                                        required: ["error", "message"],
                                         properties: {
                                             error: {
                                                 type: "string",
@@ -209,6 +211,7 @@ export async function GET() {
                                 "application/json": {
                                     schema: {
                                         type: "object",
+                                        required: ["error"],
                                         properties: {
                                             error: {
                                                 type: "string",
