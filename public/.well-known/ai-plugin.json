@@ -1,0 +1,17 @@
+{
+    "schema_version": "v1",
+    "name_for_human": "Risk Analysis Assistant",
+    "name_for_model": "risk_analysis_assistant",
+    "description_for_human": "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
+    "description_for_model": "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
+    "auth": {
+        "type": "none"
+    },
+    "api": {
+        "type": "openapi",
+        "url": "/api/ai-plugin"
+    },
+    "logo_url": "https://your-domain.com/logo.png",
+    "contact_email": "your@email.com",
+    "legal_info_url": "https://your-domain.com/legal"
+} 

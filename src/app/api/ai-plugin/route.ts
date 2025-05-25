@@ -5,8 +5,8 @@ export async function GET() {
     const pluginData = {
         openapi: "3.0.0",
         info: {
-            title: "Boilerplate",
-            description: "API for the boilerplate",
+            title: "Risk Analysis Assistant",
+            description: "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
             version: "1.0.0",
         },
         servers: [
@@ -15,13 +15,18 @@ export async function GET() {
             },
         ],
         "x-mb": {
-            "account-id": ACCOUNT_ID,
-            assistant: {
-                name: "Risk Analysis Assistant",
-                description: "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
-                instructions: "You analyze and provide risk assessments for Ethereum smart contracts, liquidity pools, and DeFi protocols. For each analysis, you evaluate multiple risk factors including contract verification and age, liquidity depth and concentration, price volatility, security posture, market metrics, and governance structure. Use the risk-analyzer tool to get detailed risk metrics for any Ethereum address. Present the analysis in a clear, structured format highlighting key risk factors and their implications. For high-risk findings, provide specific recommendations for risk mitigation.",
-                tools: [{ type: "risk-analyzer" }]
-            },
+            "account-id": "tenkai.ch",
+            "email": "contact@tenkai.ch",
+            "assistant": {
+                "name": "Risk Analysis Assistant",
+                "description": "An AI-powered risk analysis assistant that evaluates smart contracts, liquidity pools, and DeFi protocols. It provides comprehensive risk assessments including contract security, liquidity analysis, market volatility, and governance risks.",
+                "instructions": "You analyze and provide risk assessments for Ethereum smart contracts, liquidity pools, and DeFi protocols. For each analysis, you evaluate multiple risk factors including contract verification and age, liquidity depth and concentration, price volatility, security posture, market metrics, and governance structure. Use the risk-analyzer tool to get detailed risk metrics for any Ethereum address. Present the analysis in a clear, structured format highlighting key risk factors and their implications. For high-risk findings, provide specific recommendations for risk mitigation.",
+                "tools": [{ type: "risk-analyzer" }],
+                "image": "https://your-domain.com/logo.png",
+                "categories": ["DeFi", "Security", "Risk Analysis", "Smart Contracts"],
+                "chainIds": [1],
+                "version": "1.0.0"
+            }
         },
         paths: {
             "/api/tools/risk-analyzer": {
@@ -35,7 +40,8 @@ export async function GET() {
                             in: "query",
                             required: true,
                             schema: {
-                                type: "string"
+                                type: "string",
+                                pattern: "^0x[a-fA-F0-9]{40}$"
                             },
                             description: "The Ethereum smart contract address to analyze. Must be a valid smart contract address, not a regular wallet address."
                         }
@@ -215,8 +221,8 @@ export async function GET() {
                         }
                     }
                 }
-            },
-        },
+            }
+        }
     };
 
     return NextResponse.json(pluginData);
