@@ -11,7 +11,7 @@ export async function GET() {
         },
         servers: [
             {
-                url: PLUGIN_URL,
+                url: "https://risk-analyzer-ai-agent-hl43.vercel.app",
             },
         ],
         "x-mb": {
