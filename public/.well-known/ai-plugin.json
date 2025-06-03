@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://risk-analyzer-ai-agent-hl43.vercel.app"
+            "url": "https://risk-analyzer-ai-agent.vercel.app"
         }
     ],
     "x-mb": {
