@@ -47,7 +47,7 @@ export async function GET(request: Request) {
         const goPlusData = isToken ? await getGoPlusSecurity(address) : {};
 
         // Calculate risk metrics with combined data
-        const riskMetrics = calculateRiskMetrics(contractData, goPlusData, isToken);
+        const riskMetrics = calculateRiskMetrics(contractData, goPlusData, isToken, address);
 
         return NextResponse.json(riskMetrics);
     } catch (error) {

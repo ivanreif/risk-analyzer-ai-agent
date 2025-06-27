@@ -5,7 +5,6 @@ export interface RiskMetrics {
     overallRisk: number;
     details: {
         contractVerified: boolean;
-        protocolAge: number;
         codeQuality: number;
         securityIssues: string[];
         compilerVersion: string;
@@ -16,7 +15,6 @@ export interface RiskMetrics {
             isBlacklisted: boolean;
             isProxy: boolean;
             isMintable: boolean;
-            isOpenSource: boolean;
             isWhitelisted: boolean;
             isAntiWhale: boolean;
             isTradingEnabled: boolean;

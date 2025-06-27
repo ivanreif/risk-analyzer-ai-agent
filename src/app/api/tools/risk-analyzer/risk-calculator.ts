@@ -1,8 +1,9 @@
 import { RiskMetrics, ContractData, GoPlusTokenData } from "./types";
 
-export function calculateRiskMetrics(contractData: ContractData, goPlusData: GoPlusTokenData, isToken: boolean): RiskMetrics {
-    const contractRisk = calculateContractRisk(contractData);
-    const securityRisk = calculateSecurityRisk(contractData, goPlusData, isToken);
+export function calculateRiskMetrics(contractData: ContractData, goPlusData: GoPlusTokenData, isToken: boolean, address?: string): RiskMetrics {
+    let contractRisk = calculateContractRisk(contractData);
+    let securityRisk = calculateSecurityRisk(contractData, goPlusData, isToken);
+    
     
     return {
         contractRisk,
@@ -10,9 +11,8 @@ export function calculateRiskMetrics(contractData: ContractData, goPlusData: GoP
         overallRisk: (contractRisk + securityRisk) / 2,
         details: {
             contractVerified: contractData.verified,
-            protocolAge: contractData.protocolAge,
             codeQuality: calculateCodeQuality(contractData),
-            securityIssues: getSecurityIssues(contractData, goPlusData, isToken),
+            securityIssues: getSecurityIssues(contractData, goPlusData, isToken, address),
             compilerVersion: contractData.compilerVersion || "unknown",
             optimizationEnabled: contractData.optimizationEnabled,
             isContract: true,
@@ -21,7 +21,6 @@ export function calculateRiskMetrics(contractData: ContractData, goPlusData: GoP
                 isBlacklisted: goPlusData.is_blacklisted === "1",
                 isProxy: goPlusData.is_proxy === "1",
                 isMintable: goPlusData.is_mintable === "1",
-                isOpenSource: goPlusData.is_open_source === "1",
                 isWhitelisted: goPlusData.is_whitelisted === "1",
                 isAntiWhale: goPlusData.is_anti_whale === "1",
                 isTradingEnabled: goPlusData.is_trading_enabled === "1",
@@ -41,8 +40,15 @@ export function calculateContractRisk(data: ContractData): number {
     // Verification status (20% weight)
     if (!data.verified) {
         riskScore += 0.2;
-        // For unverified contracts, we can't analyze the code properly
-        return Math.min(riskScore + 0.3, 1.0); // Add extra penalty for unverified
+        
+        // If we have API limitations, add moderate risk but don't max out
+        if (data.criticalVulnerabilities.some(v => v.includes('API access limited') || v.includes('analysis failed'))) {
+            riskScore += 0.3; // Moderate penalty for unknown status
+            return Math.min(riskScore, 0.7); // Cap at 0.7 for API limitations
+        }
+        
+        // For truly unverified contracts, add higher penalty
+        return Math.min(riskScore + 0.4, 1.0);
     }
     
     // Critical vulnerabilities (40% weight)
@@ -55,10 +61,6 @@ export function calculateContractRisk(data: ContractData): number {
     if (data.majorRisks && data.majorRisks.length > 0) {
         riskScore += Math.min(data.majorRisks.length * 0.125, 0.25);
     }
-    
-    // Age factor (reduced to 10% weight, more nuanced)
-    const ageFactor = calculateAgeFactor(data.protocolAge);
-    riskScore += ageFactor * 0.1;
     
     // Minor issues (5% weight)
     if (data.minorRisks && data.minorRisks.length > 0) {
@@ -136,7 +138,7 @@ export function calculateCodeQuality(data: ContractData): number {
     return Math.max(0.4, qualityScore);
 }
 
-export function getSecurityIssues(data: ContractData, goPlusData: GoPlusTokenData, isToken: boolean): string[] {
+export function getSecurityIssues(data: ContractData, goPlusData: GoPlusTokenData, isToken: boolean, address?: string): string[] {
     const issues: string[] = [];
     
     // Handle unverified contracts
