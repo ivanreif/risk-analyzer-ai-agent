@@ -8,7 +8,10 @@
     "build": "next build",
     "build:deploy": "next build && make-agent deploy -u https://risk-analyzer-ai-agent.vercel.app",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node test-risk-analyzer.js",
+    "test:quick": "API_BASE_URL=http://localhost:3000 node test-risk-analyzer.js",
+    "test:production": "API_BASE_URL=https://risk-analyzer-ai-agent.vercel.app node test-risk-analyzer.js"
   },
   "dependencies": {
     "@bitte-ai/agent-sdk": "^0.1.9",

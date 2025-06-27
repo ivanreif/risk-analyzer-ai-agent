@@ -1,0 +1,143 @@
+{
+    "popular_contracts": [
+      {
+        "name": "Lido",
+        "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+        "category": "Liquid staking",
+        "TVL_USD": 22496000000,
+        "risk": "well‑audited"
+      },
+      {
+        "name": "Aave V3",
+        "address": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "category": "Lending",
+        "TVL_USD": 21578000000,
+        "risk": "audited"
+      },
+      {
+        "name": "EigenLayer",
+        "address": "0x39053D51B77DC0d36036Fc1fCc8Cb819df8Ef37A",
+        "category": "Restaking",
+        "TVL_USD": 11224000000,
+        "risk": "new, moderate"
+      },
+      {
+        "name": "ether.fi",
+        "address": "0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4",
+        "category": "Liquid staking",
+        "TVL_USD": 6418000000,
+        "risk": "mid‑risk"
+      },
+      {
+        "name": "USDT",
+        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "category": "Stablecoin",
+        "TVL_USD": null,
+        "risk": "custodial"
+      },
+      {
+        "name": "Uniswap V3",
+        "address": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+        "category": "DEX",
+        "TVL_USD": 4751000000,
+        "risk": "audited"
+      },
+      {
+        "name": "Curve Finance",
+        "address": "0xD533a949740bb3306d119CC777fa900BA034cd52",
+        "category": "Stablecoin DEX",
+        "TVL_USD": 1894000000,
+        "risk": "audited"
+      },
+      {
+        "name": "Pendle",
+        "address": "0x06450dEe7FD2Fb8E39061434BAbCFC05599a6Fb8",
+        "category": "Yield",
+        "TVL_USD": 4977000000,
+        "risk": "audited"
+      },
+      {
+        "name": "Convex Finance",
+        "address": "0x4e3FBD56CD56c3e72c1403e103b45Db9da5B9D2B",
+        "category": "Yield",
+        "TVL_USD": 1059000000,
+        "risk": "audited"
+      },
+      {
+        "name": "Compound V2",
+        "address": "0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B",
+        "category": "Lending",
+        "TVL_USD": 2200000000,
+        "risk": "audited"
+      },
+      {
+        "name": "Compound V3",
+        "address": "0xa17581a9e3356d9a858b789d68b4d866e593ae94",
+        "category": "Lending",
+        "TVL_USD": null,
+        "risk": "audited"
+      },
+      {
+        "name": "SushiSwap",
+        "address": "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F",
+        "category": "DEX",
+        "TVL_USD": 1500000000,
+        "risk": "audited"
+      },
+      {
+        "name": "1inch",
+        "address": "0x1111111254EEB25477B68fb85Ed929f73A960582",
+        "category": "Aggregator",
+        "TVL_USD": null,
+        "risk": "audited"
+      },
+      {
+        "name": "MakerDAO",
+        "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "category": "Stablecoin",
+        "TVL_USD": null,
+        "risk": "audited"
+      },
+      {
+        "name": "CryptoKitties",
+        "address": "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+        "category": "NFT game",
+        "TVL_USD": null,
+        "risk": "historic"
+      }
+    ],
+    "hacked_contracts": [
+      {
+        "name": "Abracadabra Money",
+        "address": "0xbc452fdc8f851d7c5b72e1fe74dfb63bb793d511",
+        "exploit_usd": 50000000,
+        "exploit_type": "Flash Loan"
+      },
+      {
+        "name": "Sonne Finance",
+        "address": "0xbc452fdc8f851d7c5b72e1fe74dfb63bb793d511",
+        "exploit_usd": 610000000,
+        "exploit_type": "Precision Bug"
+      }
+    ],
+    "low_quality_contracts": [
+      {
+        "name": "Forsage Ponzi",
+        "address": "0x5acc84a3e955Bdd76467d3348077d003f00fFB97",
+        "issue": "Ponzi pyramid",
+        "risk": "high"
+      },
+      {
+        "name": "Million.money",
+        "address": "0xbCF935D206Ca32929e1b887a07Ed240f0D8CCD22",
+        "issue": "Pyramid mechanics",
+        "risk": "high"
+      },
+      {
+        "name": "Honeypot",
+        "address": "0x34C6211621f2763c60Eb007dC2aE91090A2d22f6",
+        "issue": "Malicious code",
+        "risk": "high"
+      }
+    ]
+  }
