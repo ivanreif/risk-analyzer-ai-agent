@@ -16,6 +16,7 @@ export function calculateRiskMetrics(contractData: ContractData, goPlusData: GoP
             compilerVersion: contractData.compilerVersion || "unknown",
             optimizationEnabled: contractData.optimizationEnabled,
             isContract: true,
+            isToken: isToken,
             tokenSecurity: isToken ? {
                 isHoneypot: goPlusData.is_honeypot === "1",
                 isBlacklisted: goPlusData.is_blacklisted === "1",

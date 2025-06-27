@@ -10,6 +10,7 @@ export interface RiskMetrics {
         compilerVersion: string;
         optimizationEnabled: boolean;
         isContract: boolean;
+        isToken: boolean;
         tokenSecurity?: {
             isHoneypot: boolean;
             isBlacklisted: boolean;
