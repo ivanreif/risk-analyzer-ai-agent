@@ -8,7 +8,7 @@ const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY;
 export async function checkIsEthereumContract(address: string): Promise<boolean> {
     try {
         const response = await axios.get(
-            `https://api.etherscan.io/api?module=proxy&action=eth_getCode&address=${address}&tag=latest&apikey=${ETHERSCAN_API_KEY}`
+            `https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getCode&address=${address}&tag=latest&apikey=${ETHERSCAN_API_KEY}`
         );
         console.log(response.data);
         return response.data.result !== '0x' && response.data.result !== '0x0';
@@ -22,7 +22,7 @@ export async function checkIsContract(address: string): Promise<boolean> {
     try {
         // Get bytecode from Etherscan
         const response = await axios.get(
-            `https://api.etherscan.io/api?module=proxy&action=eth_getCode&address=${address}&tag=latest&apikey=${ETHERSCAN_API_KEY}`
+            `https://api.etherscan.io/v2/api?chainid=1&module=proxy&action=eth_getCode&address=${address}&tag=latest&apikey=${ETHERSCAN_API_KEY}`
         );
 
         const bytecode = response.data.result;
@@ -37,12 +37,12 @@ export async function checkIsContract(address: string): Promise<boolean> {
 export async function getContractData(address: string): Promise<ContractData> {
     // Get contract verification status and source code from Etherscan
     const response = await axios.get(
-        `https://api.etherscan.io/api?module=contract&action=getsourcecode&address=${address}&apikey=${ETHERSCAN_API_KEY}`
+        `https://api.etherscan.io/v2/api?chainid=1&module=contract&action=getsourcecode&address=${address}&apikey=${ETHERSCAN_API_KEY}`
     );
     
     // Get contract creation date and transaction history
     const txResponse = await axios.get(
-        `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`
+        `https://api.etherscan.io/v2/api?chainid=1&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`
     );
 
     const creationDate = txResponse.data.result[0]?.timeStamp 
@@ -52,6 +52,8 @@ export async function getContractData(address: string): Promise<ContractData> {
     const sourceCode = response.data.result[0].SourceCode || '';
     const contractName = response.data.result[0].ContractName || 'Contract';
     const codeAnalysis = analyzeSolidityCode(sourceCode);
+
+    console.log('codeAnalysis',response.data);
 
     return {
         isContract: true,
