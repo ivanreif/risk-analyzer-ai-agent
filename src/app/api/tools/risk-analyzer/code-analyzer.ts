@@ -1,26 +1,36 @@
 export function isTokenContract(sourceCode: string): boolean {
     if (!sourceCode) return false;
     
-    // Check for common token interface implementations
-    const tokenPatterns = [
-        'interface IERC20',
-        'interface ERC20',
-        'interface IERC721',
-        'interface ERC721',
-        'interface IERC1155',
-        'interface ERC1155',
-        'function transfer(',
-        'function transferFrom(',
-        'function balanceOf(',
-        'function approve(',
-        'function allowance(',
-        'function totalSupply(',
-        'function name()',
-        'function symbol()',
-        'function decimals()'
+    const cleanCode = sourceCode
+        .replace(/\/\*[\s\S]*?\*\//g, '') 
+        .replace(/\/\/.*$/gm, '') 
+        .replace(/"[^"]*"/g, '""') 
+        .replace(/'[^']*'/g, "''");
+    
+    const erc20InterfacePattern = /(?:contract\s+\w+\s+(?:is\s+.*?)?(?:IERC20|ERC20))|(?:interface\s+(?:IERC20|ERC20))/i;
+    
+    if (erc20InterfacePattern.test(cleanCode)) {
+        return true;
+    }
+    
+    const erc20FunctionPatterns = [
+        /function\s+transfer\s*\(\s*address\s+\w*,?\s*uint256\s+\w*\s*\)\s*(?:external|public)/i,
+        /function\s+transferFrom\s*\(\s*address\s+\w*,?\s*address\s+\w*,?\s*uint256\s+\w*\s*\)\s*(?:external|public)/i,
+        /function\s+balanceOf\s*\(\s*address\s+\w*\s*\)\s*(?:external|public)\s*view\s*returns?\s*\(\s*uint256\s*\)/i,
+        /function\s+approve\s*\(\s*address\s+\w*,?\s*uint256\s+\w*\s*\)\s*(?:external|public)/i,
+        /function\s+allowance\s*\(\s*address\s+\w*,?\s*address\s+\w*\s*\)\s*(?:external|public)\s*view\s*returns?\s*\(\s*uint256\s*\)/i,
+        /function\s+totalSupply\s*\(\s*\)\s*(?:external|public)\s*view\s*returns?\s*\(\s*uint256\s*\)/i
     ];
-
-    return tokenPatterns.some(pattern => sourceCode.includes(pattern));
+    
+    const erc20EventPatterns = [
+        /event\s+Transfer\s*\(\s*address\s+indexed\s+\w*,?\s*address\s+indexed\s+\w*,?\s*uint256\s+\w*\s*\)/i,
+        /event\s+Approval\s*\(\s*address\s+indexed\s+\w*,?\s*address\s+indexed\s+\w*,?\s*uint256\s+\w*\s*\)/i
+    ];
+    
+    const functionCount = erc20FunctionPatterns.filter(pattern => pattern.test(cleanCode)).length;
+    const eventCount = erc20EventPatterns.filter(pattern => pattern.test(cleanCode)).length;
+    
+    return functionCount >= 4 && eventCount >= 1;
 }
 
 export function analyzeSolidityCode(sourceCode: string) {
